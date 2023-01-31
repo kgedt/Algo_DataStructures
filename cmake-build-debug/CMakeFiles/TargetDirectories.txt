@@ -1,0 +1,3 @@
+C:/Users/magzu/CLionProjects/Algo_DS/cmake-build-debug/CMakeFiles/Algo_DS.dir
+C:/Users/magzu/CLionProjects/Algo_DS/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/magzu/CLionProjects/Algo_DS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
