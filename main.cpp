@@ -1,41 +1,17 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <cmath>
 
-#include "./Week 2/bubbleSort.h"
-#include "./Week 2/insertionSort.h"
-#include "./Week 2/selectionSort.h"
-#include "./Week 2/sortWorkTime.h"
+#include "./Week 3/min_abs_diff.h"
+#include "./Week 3/min_unfairness.h"
 
 using namespace std;
 
-void printArray(vector<int> arr); // вывод элементов вектора
-
 int main() {
-    vector<int> arr(30);
-    for (int i = 0; i < arr.size(); ++i)
-        arr[i] = rand() % 1000 + 1;
-
-    // декларируем указатель на функцию с определенным типом, параметрами под названием 'sort_function'
-    void (*sort_function)(vector<int>&);
-
-    sort_function = bubbleSort; // присваиваем переменной указатель на функцию 'bubbleSort'
-    double time = workTime(sort_function, arr);
-    cout << "work time = " << time << " microseconds" << endl;
-
-    sort_function = selectionSort; // то же, что и с пузырьком и так далее..
-    time = workTime(sort_function, arr);
-    cout << "work time = " << time << " microseconds" << endl;
-
-    sort_function = insertionSort;
-    time = workTime(sort_function, arr);
-    cout << "work time = " << time << " microseconds" << endl;
+    int n, k=2;
+    vector<int> arr = {10, 100, 300, 200, 1000, 20, 30};
+    cout << min_unfariness(arr, 3);
 
     return 0;
-}
-
-void printArray(vector<int> arr) {
-    for (int i = 0; i < arr.size(); ++i)
-        cout << arr[i] << " ";
-    cout << endl << endl;
 }
