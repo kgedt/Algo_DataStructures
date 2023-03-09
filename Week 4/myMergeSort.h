@@ -9,46 +9,46 @@ void printArray(vector<int> arr) {
         cout << val << " ";
 }
 
-void merge(vector<int> &arr, int left, int mid, int right) {
-    vector<int> leftArr(mid - left + 1);
-    vector<int> rightArr(right - mid);
-
-    for (int i = 0; i < leftArr.size(); ++i)
-        leftArr[i] = arr[left + i];
-    for (int i = 0; i < rightArr.size(); ++i)
-        rightArr[i] = arr[mid + i + 1];
-
-    int indLeft = 0, indRight = 0, indMerged = left;
-
-    while (indLeft < leftArr.size() && indRight < rightArr.size()) {
-        if (leftArr[indLeft] <= rightArr[indRight]) {
-            arr[indMerged] = leftArr[indLeft];
-            indLeft++;
-        }
-        else {
-            arr[indMerged] = rightArr[indRight];
-            indRight++;
-        }
-        indMerged++;
-    }
-    while (indLeft < leftArr.size()) {
-        arr[indMerged] = leftArr[indLeft];
-        indLeft++;
-        indMerged++;
-    }
-
-    while (indRight < rightArr.size()) {
-        arr[indMerged] = rightArr[indRight];
-        indRight++;
-        indMerged++;
-    }
-}
-
-//void merge(vector<int> &arr, int left, int mid, int right) {
-//    for (int i = left; i <= right; i++)
-//        for (int j = i; j > 0 && arr[j - 1] > arr[j]; j--)
-//            swap(arr[j - 1], arr[j]);
+//void merge(vector<int> &arr, int left_index, int mid, int right_index) {
+//    vector<int> leftArr(mid - left_index + 1);
+//    vector<int> rightArr(right_index - mid);
+//
+//    for (int i = 0; i < leftArr.size(); ++i)
+//        leftArr[i] = arr[left_index + i];
+//    for (int i = 0; i < rightArr.size(); ++i)
+//        rightArr[i] = arr[mid + i + 1];
+//
+//    int indLeft = 0, indRight = 0, indMerged = left_index;
+//
+//    while (indLeft < leftArr.size() && indRight < rightArr.size()) {
+//        if (leftArr[indLeft] <= rightArr[indRight]) {
+//            arr[indMerged] = leftArr[indLeft];
+//            indLeft++;
+//        }
+//        else {
+//            arr[indMerged] = rightArr[indRight];
+//            indRight++;
+//        }
+//        indMerged++;
+//    }
+//    while (indLeft < leftArr.size()) {
+//        arr[indMerged] = leftArr[indLeft];
+//        indLeft++;
+//        indMerged++;
+//    }
+//
+//    while (indRight < rightArr.size()) {
+//        arr[indMerged] = rightArr[indRight];
+//        indRight++;
+//        indMerged++;
+//    }
 //}
+
+void merge(vector<int> &arr, int left, int mid, int right) {
+    for (int i = left; i <= right; i++)
+        for (int j = i; j > 0 && arr[j - 1] > arr[j]; j--)
+            swap(arr[j - 1], arr[j]);
+}
 
 void myMergeSort(vector<int> &arr, int begin, int end) {
     if (begin >= end) return;

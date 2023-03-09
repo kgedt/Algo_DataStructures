@@ -21,7 +21,7 @@ double workTime(void (*sorting_foo)(vector<int>&), vector<int> arr) {
     auto start = chrono::steady_clock::now();
     sorting_foo(arr); // функция принимает вектор не по ссылке => с вектором ничего не случится
     auto end = chrono::steady_clock::now();
-    auto result = (double) chrono::duration_cast<chrono::milliseconds >(end - start).count();
+    auto result = (double) chrono::duration_cast<chrono::microseconds >(end - start).count();
 //    cout << "SELECTION SORT: " << endl;
 //    for (int i = 0; i < arr.size(); ++i) {
 //        cout << arr[i] << " ";
