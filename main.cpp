@@ -1,34 +1,43 @@
 #include <iostream>
+#include <cmath>
 #include <vector>
-#include "./Week 1/week1.h"
-#include "./Week 2/week2.h"
-#include "./Week 3/week3.h"
-#include "./Week 4/week4.h"
-#include "./Week 7/week7.h"
-#include "heapSort.h"
+#include "Week 9/week9.h"
 
 using namespace std;
 
+
 int main() {
-    QueueUsingStack_FastPush q_push;
-    QueueUsingStack_FastPop q_pop;
-    for (int i = 1; i < 100; ++i) {
-        q_push.push(i);
-        q_pop.push(i);
+    //HashMap<string, string> map(20);
+    auto *map = new HashMap<string, string>(16);
+    cout << "CAPACITY = " << map->getCapacity() << endl;
+    map->put("Kokshetau", "kokchicago");
+    map->put("Astana", "ast");
+    map->put("Kostanay", "kos");
+    map->put("Satana", "sat");
+    map->put("Uralsk", "ura");
+    map->put("Burabay", "bur");
+    map->put("Shymkent", "shym");
+    map->put("Moscow", "mos");
+    map->put("Karaganda", "kar");
+    map->put("Aksai", "aks");
+    map->put("Taldykorgan", "tald");
+    cout << "CAPACITY = " << map->getCapacity() << endl;
+    map->put("Khuli", "kh");
+    map->put("Phuket", "ph");
+    map->put("Saint-P", "spb");
+    map->put("saint-p", "spb");
+    map->put("NewYork", "ny");
+    map->put("newyork", "ny");
+    map->put("Los-Angeles", "la");
+
+    try {
+        cout << map->get("Phuket") << endl;
+        //map->remove("Astana");
+        cout << map->get("Los-Angeles") << endl;
+    } catch(const char* msg) {
+        cout << msg << endl;
     }
-
-    auto start = chrono::steady_clock::now();
-    q_pop.pop();
-    auto end = chrono::steady_clock::now();
-    auto qpop_pop_time = chrono::duration_cast<chrono::nanoseconds>(end-start).count();
-
-    start = chrono::steady_clock::now();
-    q_pop.push(5);
-    end = chrono::steady_clock::now();
-    auto qpop_push_time = chrono::duration_cast<chrono::nanoseconds>(end-start).count();
-
-    cout << "queue(fast pop) pop time = " << qpop_pop_time << " nanosec" << endl;
-    cout << "queue(fast pop) push time = " << qpop_push_time << " nanosec" << endl;
+    cout << "size = " << map->getSize() << endl;
 
     return 0;
 }
