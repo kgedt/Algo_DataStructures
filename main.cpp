@@ -7,9 +7,8 @@ using namespace std;
 
 
 int main() {
-    //HashMap<string, string> map(20);
-    auto *map = new HashMap<string, string>(16);
-    cout << "CAPACITY = " << map->getCapacity() << endl;
+    //HashTable<string, string> map(20);
+    auto *map = new HashTable<string, string>(16);
     map->put("Kokshetau", "kokchicago");
     map->put("Astana", "ast");
     map->put("Kostanay", "kos");
@@ -21,7 +20,6 @@ int main() {
     map->put("Karaganda", "kar");
     map->put("Aksai", "aks");
     map->put("Taldykorgan", "tald");
-    cout << "CAPACITY = " << map->getCapacity() << endl;
     map->put("Khuli", "kh");
     map->put("Phuket", "ph");
     map->put("Saint-P", "spb");
@@ -32,8 +30,9 @@ int main() {
 
     try {
         cout << map->get("Phuket") << endl;
-        //map->remove("Astana");
-        cout << map->get("Los-Angeles") << endl;
+        map->remove("Astana");
+        map->remove("Uralsk");
+        //cout << map->get("Uralsk") << endl;
     } catch(const char* msg) {
         cout << msg << endl;
     }

@@ -6,12 +6,17 @@ using namespace std;
 template<typename K, typename V>
 class HashNode {
 public:
-    HashNode(const K &key, const V &value, const uint64_t &hashcode) :
-            key(key), value(value), hashcode(hashcode), next(nullptr) {
+    HashNode(const K &key, const V &value, const uint64_t &hashCode) :
+            key(key), value(value), hashCode(hashCode), next(nullptr) {
     }
 
-    uint64_t getHashcode() const {
-        return hashcode;
+    ~HashNode() {
+        hashCode = NULL;
+        next = nullptr;
+    }
+
+    uint64_t getHashCode() const {
+        return hashCode;
     }
 
     K getKey() const {
@@ -37,28 +42,27 @@ public:
 private:
     K key;
     V value;
-    int hashcode;
+    int hashCode;
     HashNode *next;
 };
 
 
-
 template<typename K, typename V>
-class HashMap {
+class HashTable {
 public:
 
-    HashMap() {
+    HashTable() {
         table = new HashNode<K, V> *[capacity]();
         size = 0;
     }
 
-    HashMap(const int capacity) {
+    HashTable(const int capacity) {
         table = new HashNode<K, V> *[capacity]();
         this->capacity = capacity;
         size = 0;
     }
 
-    ~HashMap() {
+    ~HashTable() {
         for (int i = 0; i < capacity; ++i) {
             HashNode<K, V> *cur = table[i];
             while (cur != nullptr) {
@@ -72,12 +76,12 @@ public:
     }
 
     bool isContains(const K &key) {
-        uint64_t hashcode = hashing(key);
-        int index = hashcode % capacity;
+        uint64_t hashCode = hashing(key);
+        int index = hashCode % capacity;
         HashNode<K, V> *cur = table[index];
 
         while (cur != nullptr) {
-            if (cur->getHashcode() == hashcode)
+            if (cur->getHashCode() == hashCode)
                 if (cur->getKey() == key)
                     return true;
             cur = cur->getNext();
@@ -87,8 +91,8 @@ public:
 
     V get(const K &key) {
         V value;
-        uint64_t hashcode = hashing(key);
-        int index = hashcode % capacity;
+        uint64_t hashCode = hashing(key);
+        int index = hashCode % capacity;
         HashNode<K, V> *cur = table[index];
 
         while (cur != nullptr) {
@@ -98,16 +102,16 @@ public:
             }
             cur = cur->getNext();
         }
-        throw "HASHMAP_INVALID_KEY";
+        throw "HASHTABLE_INVALID_KEY";
     }
 
     void put(const K &key, const V &value) {
         int inc = 1;
         if (isContains(key)) inc = 0;
 
-        uint64_t hashcode = hashing(key);
-        int index = hashcode % capacity;
-        //cout << "key: " << key << ", hashcode: " << hashcode << ", index: " << index << endl;
+        uint64_t hashCode = hashing(key);
+        int index = hashCode % capacity;
+        //cout << "key: " << key << ", hashCode: " << hashCode << ", index: " << index << endl;
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *cur = table[index];
 
@@ -117,7 +121,7 @@ public:
         }
 
         if (cur == nullptr) {
-            cur = new HashNode<K, V>(key, value, hashcode);
+            cur = new HashNode<K, V>(key, value, hashCode);
             if (prev == nullptr) {
                 table[index] = cur;
             } else {
@@ -134,31 +138,39 @@ public:
     }
 
     void remove(const K &key) {
-        uint64_t hashcode = hashing(key);
-        int index = hashcode % capacity;
+        uint64_t hashCode = hashing(key);
+        int index = hashCode % capacity;
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *cur = table[index];
+        int cnt = 0;
+
+        if (!isContains(key)) throw "HASHTABLE_INVALID_KEY";
 
         while (cur != nullptr) {
-            if (cur->getHashcode() == hashcode)
+            if (cur->getHashCode() == hashCode)
                 if (cur->getKey() == key)
                     break;
 
             prev = cur;
             cur = cur->getNext();
+            cnt++;
         }
 
-        if (cur == nullptr) {
-            throw "HASHMAP_INVALID_KEY";
-        } else {
-            if (cur->getNext() != nullptr) {
+
+        if (cur->getNext() != nullptr) {
+            if (cnt)
                 prev->setNext(cur->getNext());
-            } else {
-                prev->setNext(nullptr);
-            }
-            delete cur;
-            size--;
+            else
+                table[index] = cur->getNext();
+        } else if (cnt) {
+            prev->setNext(nullptr);
+        } else {
+            table[index] = nullptr;
         }
+
+
+        delete cur;
+        size--;
     }
 
     int getSize() {
@@ -173,9 +185,9 @@ private:
     HashNode<K, V> **table;
     int size;
     int capacity = 16;
-    double loadFactor = 0.75;
+    double loadFactor = 0.8;
 
-    HashMap(const int capacity, const double loadFactor) {
+    HashTable(const int capacity, const double loadFactor) {
         table = new HashNode<K, V> *[capacity]();
         this->capacity = capacity;
         size = 0;
@@ -191,10 +203,9 @@ private:
     }
 
 
-
     void rehashing() {
         int newCapacity = capacity * 2;
-        auto* fullData = new HashMap<K, V>(1, getSize());
+        auto *fullData = new HashTable<K, V>(1, getSize());
         HashNode<K, V> *cur;
 
 
@@ -206,8 +217,7 @@ private:
             }
         }
 
-        auto* newMap = new HashMap<K, V>(newCapacity);
-
+        auto *newMap = new HashTable<K, V>(newCapacity);
         cur = fullData->table[0];
 
         while (cur != nullptr) {
@@ -220,6 +230,4 @@ private:
         this->size = newMap->getSize();
 
     }
-
-
 };
