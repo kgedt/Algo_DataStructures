@@ -7,9 +7,12 @@ using namespace std;
 
 
 int main() {
-    //HashTable<string, string> map(20);
-    auto *map = new HashTable<string, string>(16);
+    auto *map = new HashTable<string, string>();
     map->put("Kokshetau", "kokchicago");
+    map->put("Kazan", "kzn");
+    map->put("Petropavlovsk", "pet");
+    map->put("LV", "ac");
+    map->put("Taraz", "tar");
     map->put("Astana", "ast");
     map->put("Kostanay", "kos");
     map->put("Satana", "sat");
@@ -20,19 +23,20 @@ int main() {
     map->put("Karaganda", "kar");
     map->put("Aksai", "aks");
     map->put("Taldykorgan", "tald");
-    map->put("Khuli", "kh");
+    map->put("Khulio", "kh");
     map->put("Phuket", "ph");
     map->put("Saint-P", "spb");
-    map->put("saint-p", "spb");
     map->put("NewYork", "ny");
-    map->put("newyork", "ny");
     map->put("Los-Angeles", "la");
+    map->put("BL", "bl");
+    map->put("GA", "ga");
+    cout << "CAPACITY: " << map->getCapacity() << endl;
 
     try {
         cout << map->get("Phuket") << endl;
         map->remove("Astana");
         map->remove("Uralsk");
-        //cout << map->get("Uralsk") << endl;
+        cout << map->get("Uralsk") << endl;
     } catch(const char* msg) {
         cout << msg << endl;
     }

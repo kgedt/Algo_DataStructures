@@ -111,7 +111,6 @@ public:
 
         uint64_t hashCode = hashing(key);
         int index = hashCode % capacity;
-        //cout << "key: " << key << ", hashCode: " << hashCode << ", index: " << index << endl;
         HashNode<K, V> *prev = nullptr;
         HashNode<K, V> *cur = table[index];
 
@@ -132,9 +131,13 @@ public:
         }
         size += inc;
 
-        if (double(size) / double(capacity) > loadFactor) {
-            rehashing();
-        }
+        if (double (getFilledIndexes()) / double (getCapacity()) > loadFactor || \
+            getSize() > 2 * getCapacity()) { rehashing(); }
+
+
+//        if (double(size) / double(capacity) > loadFactor)
+//            rehashing();
+
     }
 
     void remove(const K &key) {
@@ -156,7 +159,6 @@ public:
             cnt++;
         }
 
-
         if (cur->getNext() != nullptr) {
             if (cnt)
                 prev->setNext(cur->getNext());
@@ -167,7 +169,6 @@ public:
         } else {
             table[index] = nullptr;
         }
-
 
         delete cur;
         size--;
@@ -184,10 +185,10 @@ public:
 private:
     HashNode<K, V> **table;
     int size;
-    int capacity = 16;
+    unsigned int capacity = 16;
     double loadFactor = 0.8;
 
-    HashTable(const int capacity, const double loadFactor) {
+    HashTable(const int capacity, double loadFactor) {
         table = new HashNode<K, V> *[capacity]();
         this->capacity = capacity;
         size = 0;
@@ -202,10 +203,9 @@ private:
         this->table = another;
     }
 
-
     void rehashing() {
         int newCapacity = capacity * 2;
-        auto *fullData = new HashTable<K, V>(1, getSize());
+        auto *fullData = new HashTable<K, V>(1, loadFactor = 2);
         HashNode<K, V> *cur;
 
 
@@ -228,6 +228,13 @@ private:
         this->setTable(newMap->getTable());
         this->capacity = newCapacity;
         this->size = newMap->getSize();
+    }
 
+    int getFilledIndexes() {
+        int cnt = 0;
+        for (int i = 0; i < getCapacity(); ++i)
+            if (table[i] != nullptr) cnt++;
+
+        return cnt;
     }
 };
